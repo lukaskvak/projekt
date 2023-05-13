@@ -66,13 +66,22 @@ echo "instalujem $program...."
 done
 echo "spustam firewall"
 systemctl enable ufw
+if [ $? -eq 0 ]; then
+ echo "firewall je uspesne zapnuty"
+else
+ echo "chyba pri zapnuti firewallu"
+fi
 read -p "chcete povolit nejake vase spojenia, ktore firewall nebude blokovat ? Y/n: " pov
 if [ "$pov" == "Y" ] || [ "$pov" == y ]; then
 while true; do
 read -p "zadajte prosim IP adresu zariadenia,pre ktore chcete povolit spojenie: " IP
 read -p "zadajte port, ktory chcete pouzit: " port
      ufw allow from $IP to any port $port
-    echo "spojenie bolo uspesne pridane"
+     if [ $? -eq 0 ]; then
+ echo "nove spojenie bolo uspesne pridane"
+     else
+ echo "chyba pri pridani spojenia"
+     fi
     read -p "chcete pridat dalsie spojenie ? Y/n: " repeat
     if [ "$repeat" == "n" ] || [ "$repeat" == "N" ]; then
     break
@@ -102,7 +111,6 @@ for ((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
     echo "Vytvaram osobitny priecinok s pravami pre pouzivatela $meno.."
     read -p "zadajte nazov pre vas osobitny adresar: " adresar2
      mkdir/home/$meno/$adresar2
-     chown
      chown $meno:$meno /home/$meno/$adresar2
      chmod 700 /home/$meno/$adresar2
     if [ $? -eq 0 ]; then
