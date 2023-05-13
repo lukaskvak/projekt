@@ -95,7 +95,7 @@ else
   echo "Neplatny vstup. Prosim zadaj y alebo n."
 fi
 read -p "Prosim zadajte pocet pouzivatelov, ktorych chcete vytvorit" uzivatelia
-for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
+for ((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
     read -p "Zadajte meno pre uzivatela $i: " meno
     read -p "Zadajte heslo pre uzivatela $i: " heslo
      useradd -m -s /bin/bash $meno && echo "$heslo" |  passwd $meno #vytvori noveho pouzivatela
