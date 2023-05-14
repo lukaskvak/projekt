@@ -141,11 +141,12 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
                         echo "vytvaram virtualny stroj  pre $meno"
                         sudo usermod -aG libvirt $meno
                         sudo usermod -aG libvirt-qemu $meno
-                        systemctl enable libvirt.service
-                        systemctl start libvirt.service 
+                        systemctl enable libvirtd
+                        systemctl start libvirtd 
+                        virsh start default
                         mkdir /home/$meno/virtualnystroj
                         cd /home/$meno/virtualnystroj
-                        echo "zadajte ISO disk image pre vas virtualny stroj: "
+                        echo "zadajte celu cestu ku ISO disk image pre vas virtualny stroj: "
                         read vimISO
                         echo "zadajte Pamat RAM pre vas virtualny stroj: "
                         read vimRAM
