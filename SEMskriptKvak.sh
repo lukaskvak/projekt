@@ -22,7 +22,7 @@ if [ $EUID -ne 0 ]; then
   echo "##########################################"
   read -p "zadaj heslo pre roota: " heslo
   echo "##########################################"
-   echo $heslo | sudo su -
+   echo $heslo | sudo su root
 fi
 echo "##########################################"
 echo "stahujem blackarch plugin a programy"
@@ -101,6 +101,8 @@ echo "instalujem $program...."
 
     fi
 done
+
+
 echo "##########################################"
 echo "spustam firewall"
 echo "##########################################"
