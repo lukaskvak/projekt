@@ -155,10 +155,10 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
                         echo "Vase zariadenie podporuje virtualizaciu"
                         echo "Vytvaram novy virtualny stroj"
                             qemu-img create -f qcow2 mydisk.qcow2 "${vimDISK}G"
-                            qemu-system-x86_64 -m "$vimRAM" -cdrom "$vimISO" -hda mydisk.qcow2
+                            qemu-system-x86_64 -enable-kvm -m "$vimRAM" -cdrom "$vimISO" -drive file=mydisk.qcow2,if=virtio -netdev user,id=user0 -device virtio-net-pci,netdev=user0
                             echo "vytvaram skript launch_vm.sh, ktorym budete moct spustat virtualny stroj"
                             echo "#!/bin/bash" > launch_vm.sh
-                             echo "qemu-system-x86_64 -m $vimRAM -hda mydisk.qcow2" >> launch_vm.sh
+                             echo "qemu-system-x86_64 -enable-kvm -m $vimRAM -drive file=mydisk.qcow2,if=virtio -netdev user,id=user0 -device virtio-net-pci,netdev=user0" >> launch_vm.sh
                             chmod +x launch_vm.sh
                              if [ $? -eq 0 ]; then
                              echo "skript launch_vm.sh bol uspesne vytvoreny.."
