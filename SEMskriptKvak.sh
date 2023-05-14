@@ -9,10 +9,10 @@ echo "overujem internetove pripojenie"
     exit 1
   fi
 echo "Kontrola ci ste ROOT"
-if [ $(id-u) -eq 0 ]; then
+if [ $(id-u) -ne 0 ]; then
   echo "Niesi root"
   echo "zadaj 2x heslo pre roota: "
- sudo -s
+  sudo su
 fi
 echo "stahujem blackarch"
 curl -O https://blackarch.org/strap.sh
@@ -107,7 +107,7 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
     sudo mkdir/home/$meno/$adresar2
     sudo chown $meno:$meno /home/$meno/$adresar2
     sudo chmod 700 /home/$meno/$adresar2
-    if [ $? -eq 0 ]; then
+ if [ $? -eq 0 ]; then
         echo "vytvorenie vaseho adresara: $adresar2 bolo uspesne"
         echo "pre adresar ma vsetky povolenia iba pouzivatel pre, ktoreho je adresar urceny.."
     else
@@ -133,7 +133,6 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
                         echo "Niekde nastala chyba skuste skript spustit znovu ako root"
                         esac
 
-    fi
     echo "chcete si prednastavit virtualny stroj,ktory budete mat na testovanie ? Y/n: "
     read choice
             case $choice in
@@ -156,15 +155,16 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
                            if grep -o 'vmx\|svm' /proc/cpuinfo > /dev/null; then
                         echo "Vase zariadenie podporuje virtualizaciu"
                         echo "Vytvaram novy virtualny stroj"
-                            qemu-img create -f qcow2 mydisk.qcow2 "${vimDISK}G"
+                            qemu-img create -f qcow2 mydisk.qcow2 "${vimDISK}G" #vytvaranie disku pre virtualku
+                            #nastavenie parametrov a nasledne spustenie
                             qemu-system-x86_64 -enable-kvm -m "$vimRAM" -cdrom "$vimISO" -drive file=mydisk.qcow2,if=virtio -netdev user,id=user0 -device virtio-net-pci,netdev=user0
+                            #vytvorenie spustacieho skriptu
                             echo "vytvaram skript launch_vm.sh, ktorym budete moct spustat virtualny stroj"
-                            echo "#!/bin/bash" > launch_vm.sh
-                             echo "qemu-system-x86_64 -enable-kvm -m $vimRAM -drive file=mydisk.qcow2,if=virtio -netdev user,id=user0 -device virtio-net-pci,netdev=user0" >> launch_vm.sh
-                            chmod +x launch_vm.sh
+                            echo "#!/bin/bash" > /home/$meno/launch_vm.sh
+                            echo "qemu-system-x86_64 -enable-kvm -m $vimRAM -drive file=mydisk.qcow2,if=virtio -netdev user,id=user0 -device virtio-net-pci,netdev=user0" >> launch_vm.sh
+                            chmod +x /home/$meno/launch_vm.sh
                              if [ $? -eq 0 ]; then
                              echo "skript launch_vm.sh bol uspesne vytvoreny.."
-                             echo "najdete ho v $(pwd)/launch_vm.sh"
                              fi
                            else
                             echo "Vasa CPU nepodporuje virtualizaciu."
