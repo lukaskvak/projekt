@@ -9,7 +9,7 @@ echo "overujem internetove pripojenie"
     exit 1
   fi
 echo "Kontrola ci ste ROOT"
-if [ $(id-u) -ne 0 ]; then
+if [ $(id -u) -ne 0 ]; then
   echo "Niesi root"
   echo "zadaj 2x heslo pre roota: "
   sudo su
@@ -29,7 +29,7 @@ fi
 #echo "[blackarch]" | sudo tee -a /etc/pacman.conf > /dev/null
 #echo "SigLevel = Optional TrustedOnly" | sudo tee -a /etc/pacman.conf > /dev/null
 #echo "Server = https://ftp.icm.edu.pl/pub/Linux/dist/blackarch/\$repo/os/\$arch|ICMuniversity" | sudo tee -a /etc/pacman.conf > /dev/null
-sudo pacman -Syyu #synchronizacia repositarov
+sudo pacman -Syyu -y#synchronizacia repositarov
 #instalacia novych nastrojov pre pentesting a zabezpecenie
 skenery=("nmap" "masscan" "openvas" "zenmap" "nikto" "wireshark")
 exploitacia=("metasploit" "exploitdb" "msfpc" "sqlmap" "wpscan" "armitage")
@@ -49,7 +49,7 @@ read tmpusr
 for program in "${skenery[@]}" "${exploitacia[@]}" "${lamace_sifier[@]}" "${bezdrotove_zariadenia[@]}" "${webove_apky[@]}" "${ochrana[@]}" "${reverzne_inzinierstvo[@]}"
 do
 echo "instalujem $program...."
-sudo pacman -S --noconfirm "$program"
+sudo pacman -S --noconfirm "$program" -y 
     if [ $? -eq 0 ]; then
         echo "program $program bol uspesne nainstalovany"
     else
@@ -67,6 +67,7 @@ done
 fi
 echo "spustam firewall"
 systemctl enable ufw
+systemctl start ufw
 read -p "chcete povolit nejake vase spojenia, ktore firewall nebude blokovat ? Y/n: " pov
 if [ "$pov" == "Y" ] || [ "$pov" == "y" ]; then
 while true; do
