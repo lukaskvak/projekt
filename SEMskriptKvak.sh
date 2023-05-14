@@ -71,7 +71,7 @@ reverzne_inzinierstvo=("radare2" "ghidra" "hopper" "binwalk")
 lamace_sifier=("hydra" "john" "hashcat" "cewl" "crowbar")
 word_listy=("wordlists" "gemu" )
 bezdrotove_zariadenia=("aircrack-ng" "reaver" "mdk3" "bully" "fluxion" "bettercap")
-webove_apky=("burpsuite" "owasp-zap" "sqliv" "dirb" "sqlninja")
+webove_apky=("burpsuite" "gobuster" "sqlmap" "dirb" "sqlninja")
 ochrana=("terminator" "snort" "ossec" "tripwire" "fail2ban" "logwatch" "ufw")
 echo "spustam instalaciu..."
  echo "##########################################"
