@@ -60,9 +60,9 @@ fi
 echo "##########################################"
 echo "pridavam BlackArch repositar do pacman manazera.."
 echo "##########################################"
-echo "[blackarch]" |  tee -a /etc/pacman.conf > /dev/null
-echo "SigLevel = Optional TrustedOnly" |  tee -a /etc/pacman.conf > /dev/null
-echo "Server = https://ftp.icm.edu.pl/pub/Linux/dist/blackarch/\$repo/os/\$arch|ICMuniversity" |  tee -a /etc/pacman.conf > /dev/null
+#echo "[blackarch]" |  tee -a /etc/pacman.conf > /dev/null
+#echo "SigLevel = Optional TrustedOnly" |  tee -a /etc/pacman.conf > /dev/null
+#echo "Server = https://ftp.icm.edu.pl/pub/Linux/dist/blackarch/\$repo/os/\$arch|ICMuniversity" |  tee -a /etc/pacman.conf > /dev/null
  pacman -Syy #synchronizacia repositarov
 #instalacia novych nastrojov pre pentesting a zabezpecenie
 skenery=("nmap" "masscan" "openvas" "zenmap" "nikto" "wireshark")
@@ -74,6 +74,10 @@ bezdrotove_zariadenia=("aircrack-ng" "reaver" "mdk3" "bully" "fluxion" "betterca
 webove_apky=("burpsuite" "owasp-zap" "sqliv" "dirb" "sqlninja")
 ochrana=("terminator" "snort" "ossec" "tripwire" "fail2ban" "logwatch" "ufw")
 echo "spustam instalaciu..."
+ echo "##########################################"
+        echo "yay nemsie bezat ako root preto zadajte meno bezneho uzivatela"
+        echo "zadajte meno pouzivatela, ktoreo pouzijeme pre yay: "
+        read tmpuzi
 for program in "${skenery[@]}" "${exploitacia[@]}" "${lamace_sifier[@]}" "${bezdrotove_zariadenia[@]}" "${webove_apky[@]}" "${ochrana[@]}" "${reverzne_inzinierstvo[@]}"
 do
 echo "instalujem $program...."
@@ -87,10 +91,7 @@ echo "instalujem $program...."
         echo "program $program nebol uspesne nainstalovany"
         echo "##########################################"
         echo "skusim pouzit yay"
-        echo "##########################################"
-        echo "yay nemsie bezat ako root preto zadajte meno bezneho uzivatela"
-        echo "zadajte meno pouzivatela, ktoreo pouzijeme pre yay: "
-        read tmpuzi
+       
         sudo -u $tmpuzi yay -S --noconfirm "$program"
         if [ $? -eq 0 ]; then
         echo "##########################################"
