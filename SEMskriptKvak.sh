@@ -69,7 +69,7 @@ skenery=("nmap" "masscan" "openvas" "zenmap" "nikto" "wireshark")
 exploitacia=("metasploit" "exploitdb" "msfpc" "sqlmap" "wpscan" "armitage")
 reverzne_inzinierstvo=("radare2" "ghidra" "hopper" "binwalk")
 lamace_sifier=("hydra" "john" "hashcat" "cewl" "crowbar")
-word_listy=("wordlists")
+word_listy=("wordlists" "gemu" )
 bezdrotove_zariadenia=("aircrack-ng" "reaver" "mdk3" "bully" "fluxion" "bettercap")
 webove_apky=("burpsuite" "owasp-zap" "sqliv" "dirb" "sqlninja")
 ochrana=("terminator" "snort" "ossec" "tripwire" "fail2ban" "logwatch" "ufw")
@@ -88,7 +88,10 @@ echo "instalujem $program...."
         echo "##########################################"
         echo "skusim pouzit yay"
         echo "##########################################"
-         yay -S --noconfirm "$program"
+        echo "yay nemsie bezat ako root preto zadajte meno bezneho uzivatela"
+        echo "zadajte meno pouzivatela, ktoreo pouzijeme pre yay: "
+        read tmpuzi
+        sudo -u $tmpuzi yay -S --noconfirm "$program"
         if [ $? -eq 0 ]; then
         echo "##########################################"
         echo "program $program bol uspesne nainstalovany"
@@ -230,7 +233,7 @@ echo "######################################################"
                         echo "##########################################"
                         esac
 
-
+      fi
 done
 echo "##########################################"
 echo "koniec instalacie"
