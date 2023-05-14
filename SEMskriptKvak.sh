@@ -68,7 +68,7 @@ fi
 echo "spustam firewall"
 systemctl enable ufw
 read -p "chcete povolit nejake vase spojenia, ktore firewall nebude blokovat ? Y/n: " pov
-if [ "$pov" == "Y" ] || [ "$pov" == y ]; then
+if [ "$pov" == "Y" ] || [ "$pov" == "y" ]; then
 while true; do
 read -p "zadajte prosim IP adresu zariadenia,pre ktore chcete vypnut firewall: " IP
 read -p "zadajte port, ktory planujete pouzivat: " port
@@ -87,7 +87,8 @@ if [ "$priecinok" == "y" ] || [ "$priecinok" == "Y"  ]; then
   echo "Vytvaram priecinok $adresar..."
   sudo mkdir /home/$adresar #vytvorenie adresaru
   echo "nastavujem pristup a permissions"
-  sudo chown root:users /home/$adresar #nastavenie ownershipu iba pre root a users group
+  sudo groupadd SPECIAL
+  sudo chown root:SPECIAL /home/$adresar #nastavenie ownershipu iba pre root a users group
   sudo chmod 770 /home/$adresar #permissions wrx pre root a users group
   echo "zdielany priecinok bol uspesne vytvoreny.."
   elif [ "$priecinok" == "n" ] || [  "$priecinok" == "N" ]; then
@@ -100,11 +101,10 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
     read -p "Zadajte meno pre uzivatela $i: " meno
     sudo useradd -m -s /bin/bash $meno
     echo "Zadajte 2x heslo pre uzivatela $i: "
-    sudo passwd $meno #vytvori noveho pouzivatela
+    sudo passwd $meno #zahesluje noveho pouzivatela
     echo "Vytvaram osobitny priecinok s pravami pre pouzivatela $meno.."
     read -p "zadajte nazov pre vas osobitny adresar: " adresar2
     sudo mkdir/home/$meno/$adresar2
-    sudo chown
     sudo chown $meno:$meno /home/$meno/$adresar2
     sudo chmod 700 /home/$meno/$adresar2
     if [ $? -eq 0 ]; then
@@ -118,7 +118,7 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
             case $ch in
                     y | Y)
                         echo "Umoznujem pristup pre $meno"
-                        sudo usermod -aG users $meno
+                        sudo usermod -aG SPECIAL $meno
                             if [ $? -eq 0 ]; then
                         echo "Pouzivatel $meno ma pristup do /home/$adresar..."
                             else
@@ -142,6 +142,7 @@ for((i=1;i<=$uzivatelia;i++)); do # vytvorenie uzivatelov
                         sudo usermod -aG libvirt $meno
                         sudo usermod -aG libvirt-qemu $meno
                         systemctl enable libvirt.service
+                        systemctl start libvirt.service 
                         mkdir /home/$meno/virtualnystroj
                         cd /home/$meno/virtualnystroj
                         echo "zadajte ISO disk image pre vas virtualny stroj: "
