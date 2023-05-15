@@ -46,7 +46,7 @@ echo "ZADAJ PROSIM MENO BEZNEHO UZIVATELA KTOREHO POUZIJEME: "
 read tmpusr
  if [ $? -eq 0 ]; then
 
-for program in "${skenery[@]}" "${exploitacia[@]}" "${lamace_sifier[@]}" "${bezdrotove_zariadenia[@]}" "${webove_apky[@]}" "${ochrana[@]}" "${reverzne_inzinierstvo[@]}"
+for program in "${skenery[@]}" "${exploitacia[@]}" "${lamace_sifier[@]}" "${bezdrotove_zariadenia[@]}" "${webove_apky[@]}" "${ochrana[@]}" "${reverzne_inzinierstvo[@]" ${misc}}
 do
 echo "instalujem $program...."
 sudo pacman -S --noconfirm "$program" -y 
@@ -55,7 +55,7 @@ sudo pacman -S --noconfirm "$program" -y
     else
         echo "program $program nebol uspesne nainstalovany"
         echo "skusim pouzit yay"
-        sudo -u $tmpusr yay -S --noconfirm "$program"
+        sudo -u $tmpusr yay -S --noconfirm "$program" -y
         if [ $? -eq 0 ]; then
         echo "program $program bol uspesne nainstalovany"
         else
